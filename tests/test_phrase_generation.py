@@ -9,5 +9,4 @@ def test_phrase_generation() -> None:
     test_phrase = random_phrase.generate_phrase()
 
     for values in vocabulary.values():
-        assert False
-        # assert any(word.lower() in test_phrase.lower() for word in values)
+        assert any(word.lower() in test_phrase.lower() for word in values)
