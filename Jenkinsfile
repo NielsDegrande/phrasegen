@@ -21,7 +21,7 @@ pipeline {
               source venv/bin/activate -q
               pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > tmp/pylint.log || true
             '''
-            recordIssues tool: pyLint(pattern: 'tmp/pylint.log'), sourceCodeEncoding: 'UTF-8'
+            recordIssues tool: pyLint(pattern: 'tmp/pylint.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
           }
         }
         stage('Flake8') {
@@ -30,7 +30,7 @@ pipeline {
               source venv/bin/activate
               flake8 *.py $PROJECT_NAME/**.py tests/**.py > tmp/flake8.log || true
             '''
-            recordIssues tool: flake8(pattern: 'tmp/flake8.log'), sourceCodeEncoding: 'UTF-8'
+            recordIssues tool: flake8(pattern: 'tmp/flake8.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
           }
         }
         stage('MyPy') {
@@ -39,7 +39,7 @@ pipeline {
               source venv/bin/activate
               mypy *.py $PROJECT_NAME/**.py tests/**.py > tmp/mypy.log || true
             '''
-            recordIssues tool: myPy(pattern: 'tmp/mypy.log'), sourceCodeEncoding: 'UTF-8'
+            recordIssues tool: myPy(pattern: 'tmp/mypy.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
           }
         }
 

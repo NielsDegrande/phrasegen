@@ -1,7 +1,7 @@
 """Actual logic for DevOps Onboarding, Case Study 2."""
 
 from random import choice, choices
-from typing import Dict, List
+from typing import Dict,List
 
 
 def get_vocabulary() -> Dict[str, List[str]]:
@@ -45,7 +45,7 @@ def get_vocabulary() -> Dict[str, List[str]]:
     return vocabulary
 
 
-def generate_phrase() -> int:
+def generate_phrase() -> str:
     """Generate a random phrase given arrays of words.
 
     :return: A random phrase.
@@ -59,7 +59,3 @@ def generate_phrase() -> int:
     adverb = choice(vocabulary["adverbs"])
 
     return f"{adjective.capitalize()} {subject} {verb} {object_} {adverb}. "
-
-
-if __name__ == "__main__":
-    print(generate_phrase())
