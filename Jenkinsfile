@@ -4,7 +4,7 @@ pipeline {
     }
     agent any
     stages {
-        stage('1 Set up venv') {
+        stage('1 Set up virtual environment') {
             steps {
                 sh '''#!/bin/bash -ex
                 python3 -m venv venv
@@ -18,19 +18,28 @@ pipeline {
                 stage('2.1 PyLint') {
                     steps {
                         sh '''#!/bin/bash -ex
-                        source venv/bin/activate -q
-                        pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > tmp/pylint.log || true
+                            source venv/bin/activate -q
+                            pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > tmp/pylint.log || true
                         '''
                     }
                 }
                 stage('2.2 Flake8') {
                     steps {
                         sh '''#!/bin/bash -ex
-                        source venv/bin/activate
-                        flake8 *.py $PROJECT_NAME/**.py tests/**.py > tmp/flake8.log || true
+                            source venv/bin/activate
+                            flake8 *.py $PROJECT_NAME/**.py tests/**.py > tmp/flake8.log || true
                         '''
                     }
                 }
+                stage('2.3 MyPy') {
+                    steps {
+                        sh '''#!/bin/bash -ex
+                            source venv/bin/activate
+                            mypy *.py $PROJECT_NAME/**.py tests/**.py > tmp/mypy.log || true
+                        '''
+                    }
+                }
+
             }
         }
         stage('3 Run tests') {
@@ -51,8 +60,28 @@ pipeline {
                     keepAll: false,
                     reportDir: 'tmp/html_coverage',
                     reportFiles: 'index.html',
-                    reportName: "'HTML Coverage Report"
+                    reportName: 'HTML Coverage Report'
                 ])
+            }
+        }
+        stage('4 Deployment') {
+            parallel {
+                stage('4.1 Deploy in staging') {
+                    when {
+                        branch 'staging'
+                    }
+                    steps {
+                        sh 'echo "Build production image and upload to registry"'
+                    }
+                }
+                stage('4.2 Deploy in production') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        sh 'echo "Build production image and upload to registry"'
+                    }
+                }
             }
         }
     }
