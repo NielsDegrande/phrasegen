@@ -1,7 +1,7 @@
 """Actual logic for DevOps Onboarding, Case Study 2."""
 
 from random import choice, choices
-from typing import Dict,List
+from typing import Dict, List
 
 
 def get_vocabulary() -> Dict[str, List[str]]:
