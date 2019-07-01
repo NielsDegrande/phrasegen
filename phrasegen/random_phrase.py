@@ -45,7 +45,7 @@ def get_vocabulary() -> Dict[str, List[str]]:
     return vocabulary
 
 
-def generate_phrase() -> str:
+def generate_phrase() -> int:
     """Generate a random phrase given arrays of words.
 
     :return: A random phrase.
