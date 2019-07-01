@@ -1,1 +1,3 @@
-Phrasegen example to illustrate some DevOps concepts.
+# PhraseGen
+
+PhraseGen example to illustrate some DevOps concepts.
