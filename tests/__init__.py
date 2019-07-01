@@ -1,1 +1,1 @@
-"""Tests for Case Study 2."""
+"""Tests for DevOps Onboarding, Case Study 2."""

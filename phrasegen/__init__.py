@@ -1,1 +1,1 @@
-"""DevOps Onboarding, Case Study 2."""
+"""Modules holding implementation for DevOps Onboarding, Case Study 2."""
