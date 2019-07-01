@@ -19,20 +19,16 @@ pipeline {
                     steps {
                         sh '''#!/bin/bash -ex
                         source venv/bin/activate -q
-                        pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > pylint.log || true
+                        pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > tmp/pylint.log || true
                         '''
-                        warnings(parserConfigurations: [[parserName: 'PyLint', pattern: 'pylint.log']])
-                        archiveArtifacts(artifacts: 'pylint.log', fingerprint: true)
                     }
                 }
                 stage('2.2 Flake8') {
                     steps {
                         sh '''#!/bin/bash -ex
                         source venv/bin/activate
-                        flake8 *.py $PROJECT_NAME/**.py tests/**.py > flake8.log || true
+                        flake8 *.py $PROJECT_NAME/**.py tests/**.py > tmp/flake8.log || true
                         '''
-                        warnings(parserConfigurations: [[parserName: 'Pep8', pattern: 'flake8.log']])
-                        archiveArtifacts(artifacts: 'flake8.log', fingerprint: true)
                     }
                 }
             }
@@ -40,10 +36,14 @@ pipeline {
         stage('3 Run tests') {
             steps {
                 sh '''#!/bin/bash -ex
-                source venv/bin/activate
-                coverage run -m pytest -v --junitxml=tmp/unittests.xml
-                coverage xml -o tmp/coverage.xml
+                    source venv/bin/activate
+                    coverage run -m pytest -v --junitxml=tmp/unittests.xml
+                    coverage xml -o tmp/coverage.xml
                 '''
+                archiveArtifacts 'tmp/unittests.xml'
+                junit testResults: 'tmp/unittests.xml'
+                archiveArtifacts 'tmp/coverage.xml'
+                cobertura coberturaReportFile: 'tmp/coverage.xml'
             }
         }
     }
