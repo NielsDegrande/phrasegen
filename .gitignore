@@ -123,8 +123,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# PowerPoint with assignments
-Devops_Analyst.pptx
+# Exclude tmp folder
+tmp/
 
 # Exclude SonarLint
 .sonarlint
