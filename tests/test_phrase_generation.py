@@ -1,6 +1,6 @@
 """Validate sentence created by random_phrase.py."""
 
-from case_study_2 import random_phrase
+from phrasegen import random_phrase
 
 
 def test_phrase_generation() -> None:

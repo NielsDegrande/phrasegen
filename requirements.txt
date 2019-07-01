@@ -9,6 +9,5 @@ flake8-import-order
 flake8-logging-format
 flake8-module-name
 flake8-rst-docstrings
-pycodestyle
 pylint
 pytest

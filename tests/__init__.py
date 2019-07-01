@@ -1,1 +1,1 @@
-"""Tests for Case Study 2"""
+"""Tests for Case Study 2."""
