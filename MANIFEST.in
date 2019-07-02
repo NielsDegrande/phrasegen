@@ -1,0 +1,9 @@
+# Include the README.
+include README.md
+
+# Include the requirements.
+include requirements.txt
+include requirements_dev.txt
+
+# Include the main script.
+include main.py
