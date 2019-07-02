@@ -7,4 +7,4 @@ WORKDIR /home/phrasegen/
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "/home/phrasegen/main.py]
+ENTRYPOINT ["python", "/home/phrasegen/main.py"]

@@ -7,8 +7,8 @@ pipeline {
     stage('Venv') {
       steps {
         sh '''#!/bin/bash -ex
-        rm -r venv
-        python3 -m venv venv
+        rm -r .venv
+        python3 -m venv .venv
         source venv/bin/activate
         pip install -r requirements.txt -q
         '''
