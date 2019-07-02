@@ -7,6 +7,7 @@ pipeline {
     stage('Venv') {
       steps {
         sh '''#!/bin/bash -ex
+        rm -r venv
         python3 -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt -q
@@ -22,6 +23,7 @@ pipeline {
               pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > tmp/pylint.log || true
             '''
             recordIssues tool: pyLint(pattern: 'tmp/pylint.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+            archiveArtifacts 'tmp/pylint.log'
           }
         }
         stage('Flake8') {
@@ -31,6 +33,7 @@ pipeline {
               flake8 *.py $PROJECT_NAME/**.py tests/**.py > tmp/flake8.log || true
             '''
             recordIssues tool: flake8(pattern: 'tmp/flake8.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+            archiveArtifacts 'tmp/flake8.log'
           }
         }
         stage('MyPy') {
@@ -40,6 +43,7 @@ pipeline {
               mypy *.py $PROJECT_NAME/**.py tests/**.py > tmp/mypy.log || true
             '''
             recordIssues tool: myPy(pattern: 'tmp/mypy.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+            archiveArtifacts 'tmp/mypy.log'
           }
         }
 
@@ -57,14 +61,14 @@ pipeline {
         junit testResults: 'tmp/unittests.xml'
         archiveArtifacts 'tmp/coverage.xml'
         cobertura coberturaReportFile: 'tmp/coverage.xml'
-        publishHTML ([
-          reportName: 'HTML Coverage',
+        publishHTML target: [
+          allowMissing: false,
+          alwaysLinkToLastBuild: false,
+          keepAll: false,
           reportDir: 'tmp/coverage',
           reportFiles: 'index.html',
-          keepAll: false,
-          alwaysLinkToLastBuild: false,
-          allowMissing: false
-        ])
+          reportName: 'HTML Coverage'
+        ]
       }
     }
     stage('Deploy') {
