@@ -133,8 +133,13 @@ pipeline {
     }
   }
   post {
-      always {
-          deleteDir()
-      }
+    always {
+        /* Clean up workspace. */
+        deleteDir()
+        /* Clean up tmp directory. */
+        dir("${workspace}@tmp") {
+            deleteDir()
+        }
+    }
   }
 }
