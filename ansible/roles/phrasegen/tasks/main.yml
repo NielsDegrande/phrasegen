@@ -1,0 +1,7 @@
+---
+- name: git pull master
+  git: 
+    repo: "{{ git_url }}" 
+    dest: "{{ git_root }}" 
+    update: yes
+    version: master
