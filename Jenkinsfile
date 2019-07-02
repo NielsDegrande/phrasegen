@@ -95,7 +95,8 @@ pipeline {
             not {
               anyOf {
                 branch 'master';
-                branch 'staging'
+                branch 'staging';
+                expression { BRANCH_NAME ==~ /^PR-\d+$/ }
               }
             }
           }
@@ -103,6 +104,17 @@ pipeline {
             sh '''#!/bin/bash -ex
               source .venv/bin/activate
               echo "Do non-master-nor-staging stuff"
+            '''
+          }
+        }
+        stage('PR') {
+          when {
+            expression { BRANCH_NAME ==~ /^PR-\d+$/ }
+          }
+          steps {
+            sh '''#!/bin/bash -ex
+              source .venv/bin/activate
+              echo "Do PR stuff"
             '''
           }
         }
