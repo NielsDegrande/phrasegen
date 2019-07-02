@@ -11,6 +11,7 @@ pipeline {
         python3 -m venv .venv
         source .venv/bin/activate
         pip install -r requirements.txt
+        mkdir -p tmp
         '''
       }
     }
@@ -130,5 +131,10 @@ pipeline {
         }
       }
     }
+  }
+  post {
+      always {
+          deleteDir()
+      }
   }
 }
