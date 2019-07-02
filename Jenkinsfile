@@ -53,12 +53,12 @@ pipeline {
       steps {
         sh '''#!/bin/bash -ex
           source venv/bin/activate
-          coverage run --source=phrasegen -m pytest -v --junitxml=tmp/unittests.xml
+          coverage run --source=phrasegen -m pytest -v --junitxml=unittests.xml
           coverage xml -o tmp/coverage.xml
           coverage html -d tmp/coverage
         '''
-        archiveArtifacts 'tmp/unittests.xml'
-        junit testResults: 'tmp/unittests.xml'
+        archiveArtifacts 'unittests.xml'
+        junit testResults: 'unittests.xml'
         archiveArtifacts 'tmp/coverage.xml'
         cobertura coberturaReportFile: 'tmp/coverage.xml'
         publishHTML target: [
