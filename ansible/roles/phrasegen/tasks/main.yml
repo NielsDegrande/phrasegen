@@ -1,7 +1,40 @@
 ---
-- name: git pull master
-  git: 
-    repo: "{{ git_url }}" 
-    dest: "{{ git_root }}" 
+- name: Git pull master
+  git:
+    repo: "{{ git_url }}"
+    dest: "{{ git_root }}"
     update: yes
     version: master
+
+- name: Install docker
+  become: yes
+  yum:
+    name: docker
+    state: present
+
+- name: Install pip
+  become: yes
+  yum:
+    name: python-pip
+    state: present
+
+- name: Install docker-py package
+  become: yes
+  pip:
+    name: docker-py
+
+- name: Start docker service
+  become: yes
+  service:
+    name: docker
+    state: started
+
+- name: Docker build image
+  become: yes
+  docker_image:
+    name: phrasegen
+    build:
+      path: "{{ git_root }}"
+      pull: yes
+    tag: latest
+    source: build
