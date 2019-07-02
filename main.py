@@ -13,7 +13,7 @@ from phrasegen import random_phrase
 )
 def main(theme: str) -> None:
     """Generate random phrases."""
-    print(f"Theme provided: {theme}.")
+    print(f"Theme: {theme}.")
     print(random_phrase.generate_phrase())
 
 
