@@ -1,4 +1,5 @@
 ansible
+black
 coverage
 flake8
 flake8-blind-except
