@@ -1,4 +1,5 @@
 ansible
+bandit
 black
 coverage
 flake8
