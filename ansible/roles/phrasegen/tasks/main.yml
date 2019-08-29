@@ -6,6 +6,7 @@
     update: yes
     version: master
     accept_hostkey: yes
+    force: yes
 
 - name: Install dependencies
   become: yes
