@@ -8,13 +8,13 @@
 
 - name: Install docker
   become: yes
-  yum:
+  apt:
     name: docker
     state: present
 
 - name: Install pip
   become: yes
-  yum:
+  apt:
     name: python-pip
     state: present
 
