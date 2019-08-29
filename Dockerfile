@@ -1,10 +1,11 @@
 FROM python:3.7
 
-COPY main.py requirements.txt /home/phrasegen/
-COPY phrasegen/*.py /home/phrasegen/phrasegen/
+COPY requirements.txt /home/phrasegen/
+COPY phrasegen/ /home/phrasegen/phrasegen/
 
 WORKDIR /home/phrasegen/
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["python", "/home/phrasegen/main.py"]
+ENTRYPOINT ["python", "/home/phrasegen/phrasegen/__main__.py"]
+CMD ["--help"]
