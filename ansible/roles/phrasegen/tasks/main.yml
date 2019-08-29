@@ -57,7 +57,6 @@
     name: docker-py
 
 - name: Start docker service
-  become: yes
   service:
     name: docker
     state: started
@@ -71,3 +70,7 @@
       pull: yes
     tag: latest
     source: build
+
+- name: Allow ubuntu suser to access the docker engine
+  become: yes
+  command: usermod -a -G docker ubuntu

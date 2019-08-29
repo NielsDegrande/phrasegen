@@ -5,7 +5,7 @@ COPY phrasegen/ /home/phrasegen/phrasegen/
 
 WORKDIR /home/phrasegen/
 
-RUN pip install -r requirements.txt
+RUN pip install .
 
-ENTRYPOINT ["python", "/home/phrasegen/phrasegen/__main__.py"]
+ENTRYPOINT ["phrasegen"]
 CMD ["--help"]
