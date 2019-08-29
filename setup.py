@@ -1,41 +1,24 @@
+"""Setup script for Phrasegen."""
+
 from setuptools import setup, find_packages
 
-# Add development requirement here.
-dev_requirements = [
-    "black",
-    "coverage",
-    "flake8",
-    "flake8-blind-except",
-    "flake8-bugbear",
-    "flake8-builtins",
-    "flake8_commas",
-    "flake8-docstrings",
-    "flake8-import-order",
-    "flake8-logging-format",
-    "flake8-module-name",
-    "flake8-rst-docstrings",
-    "mypy",
-    "pylint",
-    "pytest",
-]
 
-# Read README.md to add as long_description.
-with open("README.md") as file_:
-    long_description = file_.read()
+def read_file(file_name: str) -> str:
+    """Read file and return its content.
 
-# Read the production requirements.
-with open("requirements.txt") as file_:
-    requirements = file_.read().splitlines()
+    :param file_name: Name of file to be read.
+    :return: Content of file, unprocessed.
 
-# Read the development requirements.
-with open("requirements_dev.txt") as file_:
-    dev_requirements = file_.read().splitlines()
+    """
+    with open(file_name, "r") as file_:
+        return file_.read()
+
 
 setup(
     name="phrasegen",
-    version="1.0.0",
+    version="2.0.0",
     description="Generate random phrases, for fun.",
-    long_description=long_description,
+    long_description=read_file("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/NielsDegrande/phrasegen.git",
     # Overview: https://pypi.python.org/pypi?:action=list_classifiers.
@@ -44,11 +27,14 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     keywords=["phrase", "generator"],
-    packages=find_packages(include=("phrasegen",)),
+    packages=find_packages(exclude=("tests",)),
+    platforms=["Any"],
     python_requires=">=3.7",
-    install_requires=requirements,
-    extras_require={"dev": dev_requirements},
+    install_requires=read_file("requirements.txt").splitlines(),
+    # Entangles setup.py with development concerns: use Tox instead.
+    extras_require={"dev": read_file("requirements_dev.txt").splitlines()},
     include_package_data=True,
-    entry_points={"console_scripts": ["phrasegen = main:main"]},
+    entry_points={"console_scripts": ["phrasegen = phrasegen.cli:main"]},
     project_urls={"Source": "https://github.com/NielsDegrande/phrasegen.git"},
+    license="Other/Proprietary",
 )

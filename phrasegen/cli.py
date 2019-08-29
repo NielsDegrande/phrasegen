@@ -2,7 +2,7 @@
 
 import click
 
-from phrasegen import random_phrase
+from phrasegen.generator import random_phrase
 
 
 @click.command()
