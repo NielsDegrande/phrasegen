@@ -138,7 +138,7 @@ pipeline {
             sh '''#!/bin/bash -ex
               source .venv/bin/activate
               echo "Build production image and upload to registry"
-              ansible-playbook -i ansible/production ansible/site.yml
+              ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/production ansible/site.yml
             '''
           }
         }
