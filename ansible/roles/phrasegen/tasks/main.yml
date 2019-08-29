@@ -15,6 +15,7 @@
     update_cache: yes
   vars:
     packages:
+      - aptitude
       - apt-transport-https
       - ca-certificates
       - curl
@@ -69,8 +70,9 @@
       path: "{{ git_root }}"
       pull: yes
     tag: latest
+    force_source: yes
     source: build
 
-- name: Allow ubuntu suser to access the docker engine
+- name: Allow ubuntu user to access the docker engine
   become: yes
   command: usermod -a -G docker ubuntu

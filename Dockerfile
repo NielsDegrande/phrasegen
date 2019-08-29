@@ -1,6 +1,6 @@
 FROM python:3.7
 
-COPY requirements.txt /home/phrasegen/
+COPY setup.py README.md requirements.txt requirements_dev.txt /home/phrasegen/
 COPY phrasegen/ /home/phrasegen/phrasegen/
 
 WORKDIR /home/phrasegen/
