@@ -5,6 +5,8 @@
     dest: "{{ git_root }}"
     update: yes
     version: master
+    accept_hostkey: yes
+
 
 - name: Install docker
   become: yes
