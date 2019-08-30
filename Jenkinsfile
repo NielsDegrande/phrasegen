@@ -158,7 +158,7 @@ pipeline {
       /* Post status to Slack. */
       slackSend (
         color: '#00FF00',
-        message: 'SUCCESSFUL: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})',
+        message: "SUCCESSFUL: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})",
         teamDomain: '',
         channel: '',
         tokenCredentialId: ''
@@ -168,7 +168,7 @@ pipeline {
       /* Post status to Slack. */
       slackSend (
         color: '#FF0000',
-        message: 'FAILED: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})',
+        message: "FAILED: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})",
         teamDomain: '',
         channel: '',
         tokenCredentialId: ''
