@@ -3,7 +3,9 @@ pipeline {
     PROJECT_NAME = 'phrasegen'
   }
   agent {
-    image 'python'
+    docker {
+      image 'python:latest'
+    }
   }
   stages {
     stage('Venv') {
