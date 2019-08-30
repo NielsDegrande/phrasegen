@@ -2,7 +2,11 @@ pipeline {
   environment {
     PROJECT_NAME = 'phrasegen'
   }
-  agent any
+  agent {
+    dockerfile {
+      filename 'Dockerfile.build'
+    }
+  }
   stages {
     stage('Venv') {
       steps {
