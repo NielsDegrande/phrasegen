@@ -147,12 +147,32 @@ pipeline {
   }
   post {
     always {
-        /* Clean up workspace. */
-        deleteDir()
-        /* Clean up tmp directory. */
-        dir("${workspace}@tmp") {
-            deleteDir()
-        }
+      /* Clean up workspace. */
+      deleteDir()
+      /* Clean up tmp directory. */
+      dir("${workspace}@tmp") {
+          deleteDir()
+      }
+    }
+    success {
+      /* Post status to Slack. */
+      slackSend (
+        color: '#00FF00',
+        message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})",
+        teamDomain: '',
+        channel: '',
+        tokenCredentialId: ''
+      )
+    }
+    failure {
+      /* Post status to Slack. */
+      slackSend (
+        color: '#FF0000',
+        message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})",
+        teamDomain: '',
+        channel: '',
+        tokenCredentialId: ''
+      )
     }
   }
 }
