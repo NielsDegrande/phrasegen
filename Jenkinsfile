@@ -3,9 +3,7 @@ pipeline {
     PROJECT_NAME = 'phrasegen'
   }
   agent {
-    dockerfile {
-      filename 'Dockerfile.build'
-    }
+    image 'python'
   }
   stages {
     stage('Venv') {
