@@ -7,9 +7,13 @@ pipeline {
     stage('Inspect') {
       steps {
         sh '''#!/bin/bash -ex
+          sudo apt-get update
+          sudo apt-get -y install python3
+          sudo apt-get -y install python3-pip
+          pip3 install tox
+
           rm -rf .tox || true
-          pip install tox
-          tox -e jenkins
+          python3 -m tox -e jenkins
         '''
       }
       post {
