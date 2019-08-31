@@ -24,15 +24,14 @@ setup(
     # Overview: https://pypi.python.org/pypi?:action=list_classifiers.
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.6",
     ],
     keywords=["phrase", "generator"],
     packages=find_packages(exclude=("tests",)),
     platforms=["Any"],
-    python_requires=">=3.7",
+    python_requires=">=3.6",
     install_requires=read_file("requirements.txt").splitlines(),
-    # Entangles setup.py with development concerns: use Tox instead.
-    extras_require={"dev": read_file("requirements_dev.txt").splitlines()},
+    extras_require={},
     include_package_data=True,
     entry_points={"console_scripts": ["phrasegen = phrasegen.cli:main"]},
     project_urls={"Source": "https://github.com/NielsDegrande/phrasegen.git"},

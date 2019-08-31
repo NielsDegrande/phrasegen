@@ -4,74 +4,25 @@ pipeline {
   }
   agent any
   stages {
-    stage('Venv') {
+    stage('Inspect') {
       steps {
         sh '''#!/bin/bash -ex
-        rm -rf .venv || true
-        python3 -m venv .venv
-        source .venv/bin/activate
-        pip install -r requirements.txt
-        pip install -r requirements_dev.txt
-        mkdir -p tmp
-        '''
-      }
-    }
-    stage('Style') {
-      parallel {
-        stage('PyLint') {
-          steps {
-            sh '''#!/bin/bash -ex
-              source .venv/bin/activate -q
-              pylint --rcfile=.pylintrc --output-format=parseable *.py $PROJECT_NAME/**.py tests/**.py > tmp/pylint.log || true
-            '''
-          }
-          post{
-            always {
-              recordIssues tool: pyLint(pattern: 'tmp/pylint.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
-              archiveArtifacts 'tmp/pylint.log'
-            }
-          }
-        }
-        stage('Flake8') {
-          steps {
-            sh '''#!/bin/bash -ex
-              source .venv/bin/activate
-              flake8 *.py $PROJECT_NAME/**.py tests/**.py > tmp/flake8.log || true
-            '''
-          }
-          post {
-            always {
-              recordIssues tool: flake8(pattern: 'tmp/flake8.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
-              archiveArtifacts 'tmp/flake8.log'
-            }
-          }
-        }
-        stage('MyPy') {
-          steps {
-            sh '''#!/bin/bash -ex
-              source .venv/bin/activate
-              mypy *.py $PROJECT_NAME/**.py tests/**.py > tmp/mypy.log || true
-            '''
-          }
-          post {
-            always {
-              recordIssues tool: myPy(pattern: 'tmp/mypy.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
-              archiveArtifacts 'tmp/mypy.log'
-            }
-          }
-        }
-
-      }
-    }
-    stage('Test') {
-      steps {
-        sh '''#!/bin/bash -ex
-          source .venv/bin/activate
-          py.test -v --junitxml=tmp/unittests.xml --cov-report html:tmp/coverage --cov-report xml:tmp/coverage.xml --cov=phrasegen tests
+          rm -rf .tox || true
+          pip install tox
+          tox -e jenkins
         '''
       }
       post {
         always {
+          recordIssues tool: pyLint(pattern: 'tmp/pylint.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+          archiveArtifacts 'tmp/pylint.log'
+
+          recordIssues tool: flake8(pattern: 'tmp/flake8.log'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+          archiveArtifacts 'tmp/flake8.log'
+
+          recordIssues tool: myPy(pattern: 'tmp/mypy.xml'), sourceCodeEncoding: 'UTF-8', qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+          archiveArtifacts 'tmp/mypy.xml'
+
           archiveArtifacts 'tmp/unittests.xml'
           junit 'tmp/unittests.xml'
           archiveArtifacts 'tmp/coverage.xml'
@@ -101,7 +52,7 @@ pipeline {
           }
           steps {
             sh '''#!/bin/bash -ex
-              source .venv/bin/activate
+              source .tox/jenkins/bin/activate
               echo "Do non-master-nor-staging stuff"
             '''
           }
@@ -112,7 +63,7 @@ pipeline {
           }
           steps {
             sh '''#!/bin/bash -ex
-              source .venv/bin/activate
+              source .tox/jenkins/bin/activate
               echo "Do PR stuff"
             '''
           }
@@ -123,7 +74,7 @@ pipeline {
           }
           steps {
             sh '''#!/bin/bash -ex
-              source .venv/bin/activate
+              source .tox/jenkins/bin/activate
               echo "Build staging image and upload to registry"
             '''
           }
@@ -134,7 +85,7 @@ pipeline {
           }
           steps {
             sh '''#!/bin/bash -ex
-              source .venv/bin/activate
+              source .tox/jenkins/bin/activate
               echo "Build production image and upload to registry"
               ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/production ansible/site.yml
             '''

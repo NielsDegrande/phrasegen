@@ -1,4 +1,22 @@
 [flake8]
 application-import-names = phrasegen
+exclude =
+    __pycache__,
+    *.egg-info,
+    *.pyc,
+    .cache,
+    .eggs,
+    .git,
+    .mypy_cache,
+    .pytest_cache,
+    .tox,
+    .venv,
+    ansible
+    build,
+    dist,
+    tmp,
 import-order-style = pep8
+max-complexity = 10
 max-line-length = 79
+output-file = tmp/flake8.log
+tee = True
