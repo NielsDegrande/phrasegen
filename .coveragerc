@@ -1,2 +1,6 @@
 [run]
-omit = tests/*
+omit = tests/*, phrasegen/__main__.py
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:

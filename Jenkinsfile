@@ -67,9 +67,7 @@ pipeline {
       steps {
         sh '''#!/bin/bash -ex
           source .venv/bin/activate
-          coverage run --source=phrasegen -m pytest -v --junitxml=tmp/unittests.xml
-          coverage xml -o tmp/coverage.xml
-          coverage html -d tmp/coverage
+          py.test -v --junitxml=tmp/unittests.xml --cov-report html:tmp/coverage --cov-report xml:tmp/coverage.xml --cov=phrasegen tests
         '''
       }
       post {
