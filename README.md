@@ -2,29 +2,28 @@
 
 PhraseGen example to illustrate some DevOps concepts.
 
-Run on production server using:
+Run as Docker container on production server (or Kubernetes cluster) using:
 ```bash
 sudo docker run --rm --name phrasegen phrasegen --theme {specify_theme}
 ```
 
 Run locally by:
 ```bash
-pip install -e .
+python3 -m venv .venv
+source .venv/bin/activate
+pip install .
 phrasegen --theme {specify_theme}
 ```
-_Running pip install -e . will add the project folder to sys.path, create a symbolic link from site-packages to the project folder, as well as generate egg-info._
 
-Alternatively:
+Run locally for development ("editable" install) by:
 ```bash
-pip install -r requirements.txt
-python -m phrasegen --theme {specify_theme}
+tox -e dev
+phrasegen --theme {specify_theme}
+python -m phrasegen --theme {specify_theme} # Alternative.
 ```
-_Using -m approach allows to find modules without adding it to sys.path_
+_Tox will create an editable install (similar to pip install -e .), which will add the project folder to sys.path, create a symbolic link from site-packages to the project folder, and generate egg-info._
+_Alternative with -m relies on \_\_main\_\_.py. Note that -m allows to find modules (with '.' path) to be found without adding the project folder to sys.path (in case of no editable install)._
 
-To install the development packages locally:
-```bash
-pip install -e ".[dev]"
-```
 
 To package (software or binary distribution), e.g. for PyPi:
 ```bash
