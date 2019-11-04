@@ -1,4 +1,4 @@
-# Include the README (no extension or .txt is included by default).
+# Include the README (README or README.txt is included by default).
 include README.md
 
 # Include the requirements.
